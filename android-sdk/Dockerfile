@@ -57,8 +57,8 @@ ENV _JAVA_OPTIONS -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForH
 ENV LD_LIBRARY_PATH ${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib
 
 # accept the license agreements of the SDK components
-ADD license_accepter.sh /opt/
-RUN chmod +x /opt/license_accepter.sh && /opt/license_accepter.sh $ANDROID_HOME
+RUN yes | sdkmanager --licenses > /dev/null 2>&1 && \
+    if [ $? -eq 0 ]; then echo "\nAll licenses accepted"; else echo "\nError accepting licenses"; fi;
 
 # setup adb server
 EXPOSE 5037
